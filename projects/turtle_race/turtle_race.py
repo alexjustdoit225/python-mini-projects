@@ -22,6 +22,11 @@ def get_number_of_turtles():
         else: 
             print('Number should be between 2 and 10. Try Again\n')
             continue
+        
+def create_turtles(number): 
+    COLORS = ['red', 'magenta', 'lime', 'blue', 'gold', 'brown', 'pink', 'black', 'honeydew', 'lavender']
+    turtles = []
+    
 #canvas_setup()
 #time.sleep(5)
 get_number_of_turtles()
