@@ -1,6 +1,6 @@
 import turtle
 import time
-import random
+from random import choice
 
 def canvas_setup(): 
     canvas = turtle.Screen()
@@ -26,8 +26,17 @@ def get_number_of_turtles():
 def create_turtles(number): 
     COLORS = ['red', 'magenta', 'lime', 'blue', 'gold', 'brown', 'pink', 'black', 'honeydew', 'lavender']
     turtles = []
+    for i in range(number): 
+        t = turtle.Turtle()
+        t.shape('turtle')
+        t.penup()
+        t.left(90)
+        t.color(choice(COLORS))
+        turtles.append(i)
+    #print (turtles)
     
-#canvas_setup()
-#time.sleep(5)
-get_number_of_turtles()
+canvas_setup()
+create_turtles(get_number_of_turtles())
+time.sleep(5)
+
 
