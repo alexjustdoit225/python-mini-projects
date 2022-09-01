@@ -2,10 +2,12 @@ import turtle
 import time
 from random import choice
 
+WIDTH, HEIGHT = 500, 500
+
 def canvas_setup(): 
     canvas = turtle.Screen()
     canvas.title = 'Turtle Races'
-    WIDTH, HEIGHT = 500, 500
+    
     canvas.screensize(WIDTH, HEIGHT)
 
 def get_number_of_turtles():
@@ -26,10 +28,12 @@ def get_number_of_turtles():
 def create_turtles(number): 
     COLORS = ['red', 'magenta', 'lime', 'blue', 'gold', 'brown', 'pink', 'black', 'honeydew', 'lavender']
     turtles = []
+    spacingx = WIDTH // (number + 1)
     for i in range(number): 
-        t = turtle.Turtle()
-        t.shape('turtle')
+        t = turtle.Turtle(shape='turtle')
         t.penup()
+        t.setpos(-WIDTH // 2 + (i + 1) * spacingx, -HEIGHT // 2 + 20)
+        t.pendown()
         t.left(90)
         t.color(choice(COLORS))
         turtles.append(i)
