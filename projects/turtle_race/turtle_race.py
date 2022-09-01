@@ -1,8 +1,10 @@
 import turtle
 import time
-from random import choice
+from random import choice, randrange
+import random
 
 WIDTH, HEIGHT = 500, 500
+
 
 def canvas_setup(): 
     canvas = turtle.Screen()
@@ -36,11 +38,21 @@ def create_turtles(number):
         t.pendown()
         t.left(90)
         t.color(choice(COLORS))
-        turtles.append(i)
-    #print (turtles)
+        turtles.append(t)
+    return turtles
     
+def turtles_race(): 
+    turtle_number = get_number_of_turtles()
+    turts = create_turtles(turtle_number)
+    while True: 
+        for t in turts: 
+            distance = randrange(1, 20)
+            t.forward(distance)
+            if t.ycor() >= WIDTH // 2 - 10: 
+                print(t)
+                return t
 canvas_setup()
-create_turtles(get_number_of_turtles())
+turtles_race()
 time.sleep(5)
 
 
