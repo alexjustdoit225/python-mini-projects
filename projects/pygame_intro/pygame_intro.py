@@ -7,6 +7,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('First Game')
 clock = pygame.time.Clock()
 
+sky = pygame.image.load('graphics/Sky.png')
+
 while True: 
     #checks for any player input
     for event in pygame.event.get(): 
@@ -14,6 +16,7 @@ while True:
             pygame.quit()
             exit() #most secure way to exit pygame
     #draw all of our elements
+    screen.blit(test_surface, (200,100))
     #updates everything
     pygame.display.update()
     clock.tick(60)
