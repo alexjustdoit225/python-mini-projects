@@ -33,7 +33,10 @@ while True:
     screen.blit(sky_surface, (0,0))
     screen.blit(ground_surface, (0,300))
     screen.blit(text_surface, (300, 50))
+    #draw the rectangle you used to position score
+    pygame.draw.rect(screen, 'red', score_rect, 0, 5)
     screen.blit(score_surf, score_rect)
+    
     snail_rect.left += 4
     if snail_rect.right <= 0: snail_rect.left = 800
     elif snail_rect.left >= 800: snail_rect.right = 0
@@ -44,6 +47,8 @@ while True:
     elif player1_rect.left >= 800: player1_rect.right = 0
     screen.blit(player1_surf, player1_rect)
     
+    if player1_rect.colliderect(snail_rect): 
+        print('collision detected')
 
 
     #updates everything
