@@ -18,6 +18,9 @@ snail_rect = snail_surface.get_rect(bottomright= (700, 300))
 player1_surf = pygame.image.load('projects\pygame_intro\graphics\Player\player_walk_1.png').convert_alpha()
 player1_rect = player1_surf.get_rect(midbottom= (80, 300))
 
+score_surf = test_font.render('Score: ', False, 'black')
+score_rect = score_surf.get_rect(midbottom= (WIDTH//2 - 40, 150))
+
 while True: 
     #checks for any player input
     for event in pygame.event.get(): 
@@ -30,6 +33,7 @@ while True:
     screen.blit(sky_surface, (0,0))
     screen.blit(ground_surface, (0,300))
     screen.blit(text_surface, (300, 50))
+    screen.blit(score_surf, score_rect)
     snail_rect.left += 4
     if snail_rect.right <= 0: snail_rect.left = 800
     elif snail_rect.left >= 800: snail_rect.right = 0
@@ -40,6 +44,7 @@ while True:
     elif player1_rect.left >= 800: player1_rect.right = 0
     screen.blit(player1_surf, player1_rect)
     
+
 
     #updates everything
     pygame.display.update()
