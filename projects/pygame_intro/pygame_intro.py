@@ -24,6 +24,8 @@ while True:
         if event.type == pygame.QUIT: 
             pygame.quit()
             exit() #most secure way to exit pygame
+        # if event.type == pygame.MOUSEMOTION: 
+            # if (player1_rect.collidepoint(event.pos)): print('collision')
     #draw all of our elements
     screen.blit(sky_surface, (0,0))
     screen.blit(ground_surface, (0,300))
@@ -38,11 +40,7 @@ while True:
     elif player1_rect.left >= 800: player1_rect.right = 0
     screen.blit(player1_surf, player1_rect)
     
-    #get x,y mouse position
 
-    #collision detection
-    if player1_rect.colliderect(snail_rect): 
-        print('collided')
     #updates everything
     pygame.display.update()
     clock.tick(60)
