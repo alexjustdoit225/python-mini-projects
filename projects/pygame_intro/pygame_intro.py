@@ -1,5 +1,7 @@
+from this import d
 import pygame
 from sys import exit
+from random import randint
 
 def score(): 
     time = int(pygame.time.get_ticks() / 1000) - start_time
@@ -8,6 +10,17 @@ def score():
     screen.blit(score_surf, score_rect)
     return time
     
+def obstacle_movement(obstacle_list): 
+    if obstacle_list: 
+        for rectangles in obstacle_list: 
+            rectangles.x -= 5
+            
+            screen.blit(snail_surface, rectangles)
+        return obstacle_list
+    else: 
+        return []
+
+
 pygame.init()
 WIDTH, HEIGHT = 800, 400
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -20,10 +33,15 @@ display_score = 0
 
 sky_surface = pygame.image.load('projects\pygame_intro\graphics\Sky.png').convert()
 ground_surface = pygame.image.load('projects\pygame_intro\graphics\ground.png').convert()
-# text_surface = test_font.render("First Game", False, 'black')
 
+# Obstacles
 snail_surface = pygame.image.load('projects\pygame_intro\graphics\snail\snail1.png').convert_alpha()
 snail_rect = snail_surface.get_rect(bottomright= (700, 300))
+
+obstacle_rect_list = []
+
+
+
 
 player1_surf = pygame.image.load('projects\pygame_intro\graphics\Player\player_walk_1.png').convert_alpha()
 player1_rect = player1_surf.get_rect(midbottom= (80, 300))
@@ -38,8 +56,8 @@ title_rect = title_surf.get_rect(center= (400, 50))
 start_surf = test_font.render("Press 'Space' to start", False, (111,196,169))
 start_rect = start_surf.get_rect(midbottom= (400,350))
 
-# score_surf = test_font.render('Score: ', False, 'black')
-# score_rect = score_surf.get_rect(midbottom= (WIDTH//2 - 40, 150))
+obstacle_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(obstacle_timer, 1500)
 
 while True: 
     #checks for any player input
@@ -65,21 +83,20 @@ while True:
                 player1_rect.right = 0
                 snail_rect.left = WIDTH
                 start_time = int(pygame.time.get_ticks() / 1000)
+        if event.type == obstacle_timer and game_active: 
+            print('test')
+            obstacle_rect_list.append(snail_surface.get_rect(bottomright= (randint(900,1100), 300)))
                 
     if game_active:             
         #draw all of our elements
         screen.blit(sky_surface, (0,0))
         screen.blit(ground_surface, (0,300))
-        # screen.blit(text_surface, (300, 50))
-        #draw the rectangle you used to position score
-        # pygame.draw.rect(screen, '#c0e8ec', score_rect, 0, 5)
-        # screen.blit(score_surf, score_rect)
         display_score = score()
         
-        snail_rect.left -= 4
-        if snail_rect.right <= 0: snail_rect.left = 800
-        elif snail_rect.left >= 800: snail_rect.right = 0
-        screen.blit(snail_surface, snail_rect)
+        # snail_rect.left -= 4
+        # if snail_rect.right <= 0: snail_rect.left = 800
+        # elif snail_rect.left >= 800: snail_rect.right = 0
+        # screen.blit(snail_surface, snail_rect)
         
         #add gravity to player
         player1_grav += 1
@@ -90,6 +107,9 @@ while True:
         if player1_rect.right <= 0: player1_rect.left = 800
         elif player1_rect.left >= 800: player1_rect.right = 0
         screen.blit(player1_surf, player1_rect)
+        
+        # Obstacle movement
+        obstacle_rect_list = obstacle_movement(obstacle_rect_list)
         
         #collision detection
         if player1_rect.colliderect(snail_rect): 
