@@ -15,11 +15,20 @@ def obstacle_movement(obstacle_list):
         for rectangles in obstacle_list: 
             rectangles.x -= 5
             
-            screen.blit(snail_surface, rectangles)
+            if rectangles.bottom == 300: screen.blit(snail_surface, rectangles)
+            else: screen.blit(fly_surf, rectangles)
+            #check if obstacles are off screen and copy obstacle if not otherwise do not copy it
+            obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100]
         return obstacle_list
     else: 
         return []
 
+def collisions(player, enemies): 
+    if enemies: 
+        for enemy_rect in enemies: 
+            if player.colliderect(enemy_rect): return False
+    return True
+            
 
 pygame.init()
 WIDTH, HEIGHT = 800, 400
@@ -36,7 +45,7 @@ ground_surface = pygame.image.load('projects\pygame_intro\graphics\ground.png').
 
 # Obstacles
 snail_surface = pygame.image.load('projects\pygame_intro\graphics\snail\snail1.png').convert_alpha()
-snail_rect = snail_surface.get_rect(bottomright= (700, 300))
+fly_surf = pygame.image.load('projects\pygame_intro\graphics\Fly\Fly1.png').convert_alpha()
 
 obstacle_rect_list = []
 
@@ -81,12 +90,15 @@ while True:
                 print('keydown')
                 game_active = True
                 player1_rect.right = 0
-                snail_rect.left = WIDTH
                 start_time = int(pygame.time.get_ticks() / 1000)
         if event.type == obstacle_timer and game_active: 
             print('test')
-            obstacle_rect_list.append(snail_surface.get_rect(bottomright= (randint(900,1100), 300)))
-                
+            if randint(0, 2):
+                obstacle_rect_list.append(snail_surface.get_rect(bottomright= (randint(900,1100), 300)))
+            else: 
+                obstacle_rect_list.append(fly_surf.get_rect(bottomright= (randint(900,1100), 200)))
+    
+
     if game_active:             
         #draw all of our elements
         screen.blit(sky_surface, (0,0))
@@ -112,12 +124,15 @@ while True:
         obstacle_rect_list = obstacle_movement(obstacle_rect_list)
         
         #collision detection
-        if player1_rect.colliderect(snail_rect): 
-            print('collision detected')
-            game_active = False
+        game_active = collisions(player1_rect, obstacle_rect_list)
+        
+        
     else: #what you show when you lose the game
         screen.fill((94, 129, 169))
         screen.blit(player1_stand, player1_stand_rect)
+        obstacle_rect_list.clear()
+        player1_rect.midbottom = (80, 300)
+        player1_grav = 0
         
         final_score = test_font.render(f'Score: {display_score}', False, 'black')
         final_score_rect = final_score.get_rect(center= (600, 200))
