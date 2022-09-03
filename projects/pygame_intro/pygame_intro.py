@@ -7,6 +7,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('First Game')
 clock = pygame.time.Clock()
 test_font = pygame.font.Font('projects\\pygame_intro\\font\\Pixeltype.ttf', 50)
+game_active = True
 
 sky_surface = pygame.image.load('projects\pygame_intro\graphics\Sky.png').convert()
 ground_surface = pygame.image.load('projects\pygame_intro\graphics\ground.png').convert()
@@ -28,44 +29,56 @@ while True:
         if event.type == pygame.QUIT: 
             pygame.quit()
             exit() #most secure way to exit pygame
-        if event.type == pygame.MOUSEBUTTONDOWN: 
-            if (player1_rect.collidepoint(event.pos)): 
-                print('collision')
-                if player1_rect.bottom == 300: 
+        if game_active: 
+            if event.type == pygame.MOUSEBUTTONDOWN: 
+                if (player1_rect.collidepoint(event.pos)): 
+                    print('collision')
+                    if player1_rect.bottom == 300: 
+                        player1_grav = -20
+            #detects if a key is pressed down
+            if event.type == pygame.KEYDOWN: 
+                print('keydown')
+                if event.key == pygame.K_SPACE and player1_rect.bottom == 300:
                     player1_grav = -20
-        #detects if a key is pressed down
-        if event.type == pygame.KEYDOWN: 
-            print('keydown')
-            if event.key == pygame.K_SPACE and player1_rect.bottom == 300:
-                player1_grav = -20
+        else: 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE: 
+                print('keydown')
+                game_active = True
+                player1_rect.right = 0
+                snail_rect.left = WIDTH
                 
-                
-    #draw all of our elements
-    screen.blit(sky_surface, (0,0))
-    screen.blit(ground_surface, (0,300))
-    screen.blit(text_surface, (300, 50))
-    #draw the rectangle you used to position score
-    pygame.draw.rect(screen, '#c0e8ec', score_rect, 0, 5)
-    screen.blit(score_surf, score_rect)
-    
-    snail_rect.left += 4
-    if snail_rect.right <= 0: snail_rect.left = 800
-    elif snail_rect.left >= 800: snail_rect.right = 0
-    screen.blit(snail_surface, snail_rect)
-    
-    #add gravity to player
-    player1_grav += 1
-    player1_rect.y += player1_grav
-    if player1_rect.bottom >= 300: player1_rect.bottom = 300
-    
-    player1_rect.left += 2
-    if player1_rect.right <= 0: player1_rect.left = 800
-    elif player1_rect.left >= 800: player1_rect.right = 0
-    screen.blit(player1_surf, player1_rect)
-    
-    if player1_rect.colliderect(snail_rect): 
-        print('collision detected')
+    if game_active:             
+        #draw all of our elements
+        screen.blit(sky_surface, (0,0))
+        screen.blit(ground_surface, (0,300))
+        screen.blit(text_surface, (300, 50))
+        #draw the rectangle you used to position score
+        pygame.draw.rect(screen, '#c0e8ec', score_rect, 0, 5)
+        screen.blit(score_surf, score_rect)
         
+        snail_rect.left -= 4
+        if snail_rect.right <= 0: snail_rect.left = 800
+        elif snail_rect.left >= 800: snail_rect.right = 0
+        screen.blit(snail_surface, snail_rect)
+        
+        #add gravity to player
+        player1_grav += 1
+        player1_rect.y += player1_grav
+        if player1_rect.bottom >= 300: player1_rect.bottom = 300
+        
+        player1_rect.left += 2
+        if player1_rect.right <= 0: player1_rect.left = 800
+        elif player1_rect.left >= 800: player1_rect.right = 0
+        screen.blit(player1_surf, player1_rect)
+        
+        #collision detection
+        if player1_rect.colliderect(snail_rect): 
+            print('collision detected')
+            game_active = False
+    else: #what you show when you lose the game
+        screen.fill('red')
+
+            
     #updates everything
     pygame.display.update()
     clock.tick(60)
