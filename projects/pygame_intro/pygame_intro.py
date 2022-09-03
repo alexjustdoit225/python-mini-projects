@@ -4,8 +4,9 @@ from sys import exit
 def score(): 
     time = int(pygame.time.get_ticks() / 1000) - start_time
     score_surf = test_font.render(f'Score: {time}', False, (64,64,64))
-    score_rect = score_surf.get_rect(midbottom= (370, 150))
+    score_rect = score_surf.get_rect(midbottom= (370, 50))
     screen.blit(score_surf, score_rect)
+    return time
     
 pygame.init()
 WIDTH, HEIGHT = 800, 400
@@ -15,10 +16,11 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font('projects\\pygame_intro\\font\\Pixeltype.ttf', 50)
 game_active = False
 start_time = 0
+display_score = 0
 
 sky_surface = pygame.image.load('projects\pygame_intro\graphics\Sky.png').convert()
 ground_surface = pygame.image.load('projects\pygame_intro\graphics\ground.png').convert()
-text_surface = test_font.render("First Game", False, 'black')
+# text_surface = test_font.render("First Game", False, 'black')
 
 snail_surface = pygame.image.load('projects\pygame_intro\graphics\snail\snail1.png').convert_alpha()
 snail_rect = snail_surface.get_rect(bottomright= (700, 300))
@@ -26,10 +28,15 @@ snail_rect = snail_surface.get_rect(bottomright= (700, 300))
 player1_surf = pygame.image.load('projects\pygame_intro\graphics\Player\player_walk_1.png').convert_alpha()
 player1_rect = player1_surf.get_rect(midbottom= (80, 300))
 player1_grav = 0
+
 #intro screen
 player1_stand = pygame.image.load('projects\pygame_intro\graphics\Player\player_stand.png').convert_alpha()
-player1_stand = pygame.transform.scale2x(player1_stand)
+player1_stand = pygame.transform.rotozoom(player1_stand, 0, 2)
 player1_stand_rect = player1_stand.get_rect(center= (400, 200))
+title_surf = test_font.render('Pixel Runner', False, (111,196,169))
+title_rect = title_surf.get_rect(center= (400, 50))
+start_surf = test_font.render("Press 'Space' to start", False, (111,196,169))
+start_rect = start_surf.get_rect(midbottom= (400,350))
 
 # score_surf = test_font.render('Score: ', False, 'black')
 # score_rect = score_surf.get_rect(midbottom= (WIDTH//2 - 40, 150))
@@ -63,11 +70,11 @@ while True:
         #draw all of our elements
         screen.blit(sky_surface, (0,0))
         screen.blit(ground_surface, (0,300))
-        screen.blit(text_surface, (300, 50))
+        # screen.blit(text_surface, (300, 50))
         #draw the rectangle you used to position score
         # pygame.draw.rect(screen, '#c0e8ec', score_rect, 0, 5)
         # screen.blit(score_surf, score_rect)
-        score()
+        display_score = score()
         
         snail_rect.left -= 4
         if snail_rect.right <= 0: snail_rect.left = 800
@@ -91,6 +98,15 @@ while True:
     else: #what you show when you lose the game
         screen.fill((94, 129, 169))
         screen.blit(player1_stand, player1_stand_rect)
+        
+        final_score = test_font.render(f'Score: {display_score}', False, 'black')
+        final_score_rect = final_score.get_rect(center= (600, 200))
+        
+        if display_score == 0: 
+            screen.blit(title_surf, title_rect)
+            screen.blit(start_surf, start_rect)
+        else: 
+            screen.blit(final_score, final_score_rect)
         
 
 
