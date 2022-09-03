@@ -3,7 +3,6 @@ import pygame
 from sys import exit
 from random import randint
 
-
 def score(): 
     time = int(pygame.time.get_ticks() / 1000) - start_time
     score_surf = test_font.render(f'Score: {time}', False, (64,64,64))
