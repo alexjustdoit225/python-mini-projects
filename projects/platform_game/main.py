@@ -1,9 +1,8 @@
-import pygame
-import sys
+import pygame, sys
+from settings import *
 
 # Initialize pygame, set screen, set window title, set clock to control frame rate
 pygame.init()
-WIDTH, HEIGHT = 1200, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Platform Game')
 clock = pygame.time.Clock()
