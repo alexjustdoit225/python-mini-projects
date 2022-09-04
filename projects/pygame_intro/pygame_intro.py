@@ -74,7 +74,6 @@ class Obstacle(pygame.sprite.Sprite):
         if self.rect.x <= -100: 
             self.kill()
 
-
 def score(): 
     time = int(pygame.time.get_ticks() / 1000) - start_time
     score_surf = test_font.render(f'Score: {time}', False, (64,64,64))
