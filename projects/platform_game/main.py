@@ -25,6 +25,5 @@ while True:
     
     # Update Screen
     pygame.display.update()
-    print()
     # Control FPS
     clock.tick(60)
